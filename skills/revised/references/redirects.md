@@ -81,6 +81,23 @@ export default {
 };
 ```
 
+**`vercel.json`** (domain attached to a Vercel project):
+
+```json
+{
+  "redirects": [
+    {
+      "source": "/guides/widget-basics",
+      "has": [{ "type": "host", "value": "example.com" }],
+      "destination": "https://example.org/learn/widgets",
+      "statusCode": 301
+    }
+  ]
+}
+```
+
+`permanent: true` sends 308, so set `statusCode: 301` instead (the two cannot be combined). The `has` host condition keeps the rules off the user's main domain when one project serves both. `vercel.json` redirects do not return 410; serve the Gone paths from a Vercel Function or Routing Middleware.
+
 **`_redirects`** (Netlify):
 
 ```
