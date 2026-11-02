@@ -48,7 +48,7 @@ skills/revised/
 
 ## Requirements
 
-A Revised account (https://getrevised.com). The Free plan can search and read open-tier names; Starter ($29/month) shows every name. Connecting takes one command; see https://getrevised.com/docs/agent-setup.
+A Revised account (https://getrevised.com). The Free plan can search and read open-tier names; paid plans show every name (https://getrevised.com/pricing). Connecting takes one command; see https://getrevised.com/docs/agent-setup.
 
 ## License
 

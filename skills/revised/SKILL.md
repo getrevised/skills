@@ -27,13 +27,13 @@ Work in order. Report to the user at the end of each step that produces a decisi
 
 ### 1. Account and plan
 
-The user signs up at https://getrevised.com (a human step; you cannot create the account). Plans, as published:
+The user signs up at https://getrevised.com (a human step; you cannot create the account). Plans, as published (prices: https://getrevised.com/pricing):
 
 - **Free**: browse and search everything, names shown only for `open`-tier listings, no reveals, no holds, new listings appear after 7 days.
-- **Starter ($29/month)**: every name shown, no reveal limit, 5 holds, new listings immediately.
-- **Business ($249/month)**: everything in Starter plus 20 holds, 120 requests a minute and the REST `since` change feed (for pipelines).
+- **Starter**: every name shown, no reveal limit, 5 holds, new listings immediately.
+- **Business**: everything in Starter plus 20 holds, 120 requests a minute and the REST `since` change feed (for pipelines).
 
-Do not quote other prices or features. Call `whoami` (MCP) or `GET /api/v1/me` (REST) first and trust its numbers over this list. Tell the user their plan. If they are on Free and the shortlist needs masked names, say a paid plan is needed; do not try to work around the mask.
+Do not quote prices or features from memory; send the user to the pricing page. Call `whoami` (MCP) or `GET /api/v1/me` (REST) first and trust its numbers over this list. Tell the user their plan. If they are on Free and the shortlist needs masked names, say a paid plan is needed; do not try to work around the mask.
 
 ### 2. Connect
 
@@ -77,7 +77,7 @@ Metrics are bands. A band is a range, not a measurement; do not average bands or
 For each survivor, apply the checks in `references/vetting.md`. In short:
 
 1. **Topical match** between what the old site was (Wayback history) and the user's site. This is the gate.
-2. **Linkers**: read `linked_from` and, if present, citability `basis`/sources. Are the linking sites relevant, real and editorial, or incidental?
+2. **Linkers**: read `linked_from` and `agent_citability` (`basis: seed_links` lists AI-cited sources; `link_graph` is graph position only, weaker). Are the linking sites relevant, real and editorial, or incidental?
 3. **Red flags**: spam, adult, pharma, gambling or casino history; long parked stretches; scrape/doorway content; a different language or country than the user's; a trademark in the name.
 4. **Freshness**: check `availability_checked_at`; anything stale needs a registrar check.
 

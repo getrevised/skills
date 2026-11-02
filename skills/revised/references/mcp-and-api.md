@@ -32,7 +32,7 @@ Report the plan and reveal position to the user before anything that could spend
 
 | | Free | Starter | Business |
 |---|---|---|---|
-| Price | $0 | $29/month | $249/month |
+| Price | free | see https://getrevised.com/pricing | see https://getrevised.com/pricing |
 | Reveals | none | no ceiling | no ceiling |
 | Holds at once | none | 5 | 20 |
 | Hold window | none | 48 h | 168 h |
@@ -79,7 +79,7 @@ Rules:
 - **Always present**: referring domains, backlinks, Revised Score range, snapshots, tier, TLD. **Present where known, else `null`**: age, category, Agent Citability. `metrics_missing` lists each row's gaps.
 - **Null is absent data, never zero.** Minimum filters exclude null rows.
 - **`linked_from`** names tracked sites that link in (`linked_from_count` is how many). Most human-legible signal on a row; can be empty. (`linked_by` and `cited_by*` are older aliases.)
-- **`agent_citability`**: preview score plus the AI-cited sources that link to it. `null` means no row in the current index, not zero. The source list is often empty on lower-scoring rows.
+- **`agent_citability`**: preview score plus the AI-cited sources that link to it. `null` means no row in the current index, not zero. Full rows carry `basis`: `seed_links` means AI-cited sources link to the domain and are listed in `sources`; `link_graph` means none do, `sources` is genuinely empty, and the score is the domain's link-graph position alone (it cannot exceed 70). Weigh a `link_graph` score below a `seed_links` one.
 - **`snapshots`**: banded count of archived captures; evidence the domain was a real site. A floor, not a guarantee.
 - **Traffic**: `visitor_traffic_band` (`traffic` on a summary row) is a coarse band of how popular the site was with real visitors while live, or null if it was never in the top 1M.
 - **`availability_checked_at`**: when the name was last confirmed unregistered. A stamp, not a live check. A first reveal re-checks, and holding a name whose stamp is over an hour old re-checks. Treat a stale stamp as needing your own registrar check.
@@ -112,7 +112,7 @@ Free plan: reveals are refused (`QUOTA_EXHAUSTED`) except on open listings. Ask 
 
 ## Holds
 
-`hold_domain` reserves a listing inside Revised for the plan's window so no other account can reveal or take it. It costs no reveal but requires that this account has a reveal on record for the listing. (A name disclosed on an unlimited plan counts only once `reveal_domain` has recorded it; if `hold_domain` answers `REVEAL_REQUIRED`, call `reveal_domain` first.)
+`hold_domain` reserves a listing inside Revised for the plan's window so no other account can reveal or take it. It costs no reveal. On Starter and Business (no reveal ceiling) a hold needs no reveal on record. On a plan with a ceiling it does, and `hold_domain` answers `REVEAL_REQUIRED` until you call `reveal_domain`.
 
 - Free accounts cannot hold.
 - A hold is not registration. Nothing outside Revised is reserved.

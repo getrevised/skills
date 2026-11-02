@@ -81,14 +81,14 @@ export default {
 };
 ```
 
-**`_redirects`** (Cloudflare Pages / Netlify):
+**`_redirects`** (Netlify):
 
 ```
 /guides/widget-basics  https://example.org/learn/widgets  301
 /old-promo             /410.html                           410
 ```
 
-(Netlify honours `410` via a status rule; Pages does not support 410, use a Worker there.)
+Cloudflare Pages reads the same file format but accepts only 301, 302, 303, 307, 308 and 200. Keep only the 301 lines there, and serve the 410s from a Worker or a Pages Function.
 
 **nginx**:
 

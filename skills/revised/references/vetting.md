@@ -22,7 +22,7 @@ Revised's `category` and `snapshots` help find candidates but do not replace rea
 ## 2. Linker quality
 
 - Read `linked_from` (and `linked_from_count`). Recognisable editorial linkers (encyclopedias, universities, government, major publishers, community sites) are worth more than a large count of anonymous links.
-- Read citability sources where present. A null `agent_citability` is absent data, not a bad sign.
+- Read `agent_citability.basis` and `sources`. `seed_links` names the AI-cited sources that link in, so check that they are relevant to the user's topic. `link_graph` means no such source; the score is graph position only (max 70), so treat it as weak evidence. A null `agent_citability` is absent data, not a bad sign.
 - Compare `referring_domains` with `backlinks`. Many backlinks from few referring domains usually means a sitewide footer or blogroll.
 - Ask whether the linking pages are about the same subject as the old site. Links from relevant pages justify relevant redirects; links from unrelated pages are not a reason to buy.
 - Optionally check that links still exist today with the user's backlink tool. A recorded link may be gone.
