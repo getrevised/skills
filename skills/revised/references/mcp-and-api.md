@@ -75,7 +75,7 @@ Rules:
 ## Reading a listing
 
 - **Bands**: `"100-500"` is a range, not a rounded figure. Revised Score is published as a range. Do not average bands or show a midpoint as a measurement. Shapes: `"10-50"`, `"<100"`, `"250+"`, `"1K-5K"`.
-- **`name_disclosed`**: whether `domain` is a real name. When false, `domain` is a partial mask such as `g▓▓▓▓▓▓farms`: show it to a person, never give it to a registrar. `mask_hint` is on every row and is not the test.
+- **`name_disclosed`**: whether `domain` is a real name. When false, `domain` is a partial mask such as `w▓▓▓▓▓▓gets`: show it to a person, never give it to a registrar. `mask_hint` is on every row and is not the test.
 - **Always present**: referring domains, backlinks, Revised Score range, snapshots, tier, TLD. **Present where known, else `null`**: age, category, Agent Citability. `metrics_missing` lists each row's gaps.
 - **Null is absent data, never zero.** Minimum filters exclude null rows.
 - **`linked_from`** names tracked sites that link in (`linked_from_count` is how many). Most human-legible signal on a row; can be empty. (`linked_by` and `cited_by*` are older aliases.)

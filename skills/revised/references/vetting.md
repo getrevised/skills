@@ -17,7 +17,7 @@ Question: would a reader of the old site find the user's site a natural continua
 | Different topic, or only the homepage could map | Reject. |
 | Different language or country the user does not serve | Reject unless the user serves that market. |
 
-Revised's `category` and `snapshots` help find candidates but do not replace reading the archive. The category is null on roughly two thirds of listings.
+Revised's `category` and `snapshots` help find candidates but do not replace reading the archive. The category is inferred from archived pages; it can be broad (`other`), wrong, or missing.
 
 ## 2. Linker quality
 
