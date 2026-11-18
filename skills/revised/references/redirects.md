@@ -16,7 +16,7 @@ https://web.archive.org/cdx/search/cdx?url=<domain>/*&output=json&fl=original,st
 - Add `&limit=5000` for big sites; use `&from=YYYY&to=YYYY` to bound years.
 - Normalize: strip `:80`, lower-case the host, decide whether to treat `www.` and bare the same, drop fragments.
 - Be polite to archive.org: one request, no tight loops.
-- CDX tells you which URLs existed, not which had inbound links. Use `linked_from` and the user's backlink tool where available to prioritize; keep content pages, drop obvious noise (assets, `feed`, `wp-json`, `?s=`, tracking parameters, pagination, tag/date archives).
+- CDX tells you which URLs existed, not which had inbound links. Use `linked_from`, the `links` section of `lookup_domain` and the user's backlink tool where available to prioritize. A paid deep check (`run_deep_check`, `backlinks` section) lists top backlinks with the URLs they point to; quote its price and get the user's yes first. Keep content pages, drop obvious noise (assets, `feed`, `wp-json`, `?s=`, tracking parameters, pagination, tag/date archives).
 
 ## 2. Map each URL
 

@@ -1,12 +1,12 @@
 # Registering the domain
 
-Revised sells nothing. The user pays a registrar. Cloudflare, Vercel and Porkbun let an agent run the whole check, quote and purchase flow through an MCP server, CLI or API, on the user's own signed-in account. Run the purchase call only after the user has confirmed the name, term, total price and auto-renew setting in this conversation. Never handle card numbers, registrar passwords or API secrets in chat or in files.
+Revised does not sell domain names. The user pays a registrar. Cloudflare, Vercel and Porkbun let an agent run the whole check, quote and purchase flow through an MCP server, CLI or API, on the user's own signed-in account. Run the purchase call only after the user has confirmed the name, term, total price and auto-renew setting in this conversation. Never handle card numbers, registrar passwords or API secrets in chat or in files.
 
 ## Before buying (any registrar)
 
 1. The candidate passed `vetting.md` and, if redirecting, the redirect map in `redirects.md` is drafted and approved.
-2. Use only a real name from a disclosed row (`name_disclosed: true`). Never give a registrar a masked `domain` string.
-3. Check availability **and price** live at the registrar. `availability_checked_at` is when Revised last looked; the name can be gone now. Search results at a registrar can be cached; use its check or quote call.
+2. Use only a real name: one the user typed, or a disclosed listing (`name_disclosed: true`). Never give a registrar a masked `domain` string.
+3. Check availability **and price** live at the registrar. `availability_checked_at` is when Revised last looked; the name can be gone now. `lookup_domain`'s `registration` section is a live registry and DNS check, but the registrar's answer is the one that counts. Search results at a registrar can be cached; use its check or quote call.
 4. Expired names sometimes sit in redemption or pending delete. If the registrar says unavailable but the Revised stamp is recent, say so; the user may be racing another registrant. Do not suggest backorder services unless asked.
 5. Premium or aftermarket pricing is the user's decision. Say plainly when a price is above the standard rate.
 6. Registrant contact: the user's own details. Prefer WHOIS privacy where offered.
@@ -103,14 +103,15 @@ Notes:
 
 1. Confirm the registration completed (the registrar's get or order call, or the user).
 2. If a Revised hold is active: `release_hold` with `outcome: "registered"`. This triggers a fresh availability check and retires the listing so it is not offered to someone else.
-3. DNS:
+3. Offer to add the name to the user's My domains list (`add_my_domains`) so changes to its record (expiry, registration status, referring domains) show up in `list_my_domain_changes`.
+4. DNS:
    - Cloudflare Registrar: already on Cloudflare DNS.
    - Elsewhere, to use Cloudflare for redirects: add the domain as a site in Cloudflare and switch nameservers at the registrar to the two Cloudflare gives; wait for "Active".
    - Vercel: add the domain to the project that will serve redirects.
    - For Cloudflare redirect rules, records must be proxied (orange cloud); a placeholder A record such as `192.0.2.1` is fine.
-4. HTTPS: the host or Cloudflare issues the certificate. Plain http must 301 to https.
-5. Check with `dig +short <domain>` and `curl -sI https://<domain>/`.
-6. Only then deploy the redirects (see `redirects.md`).
+5. HTTPS: the host or Cloudflare issues the certificate. Plain http must 301 to https.
+6. Check with `dig +short <domain>` and `curl -sI https://<domain>/`.
+7. Only then deploy the redirects (see `redirects.md`).
 
 ## Do not
 
