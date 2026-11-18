@@ -120,7 +120,7 @@ A name in the pool is not thereby a directory listing.
 
 ## list_categories
 
-Call once before the first directory search. Free and cached. Returns `categories` with `code`, `label`, `listings` and `open` (how many are open tier), and `count`. Codes are Revised's own; "marketing" and "software" are not codes. `search_domains` refuses an unknown code (`INVALID_ARGUMENT`) rather than returning an empty result. Some listings have no category and are in none of the counts. There is no REST equivalent.
+Call once before the first directory search. Free and cached. Returns `categories` with `code`, `label`, `listings` and `open` (how many are open tier), and `count`. Codes are Revised's own: use the `code` values it returns, not free-text words. "software" and "tech" are not codes (software is `saas`). `search_domains` refuses an unknown code (`INVALID_ARGUMENT`) rather than returning an empty result. Some listings have no category and are in none of the counts. There is no REST equivalent.
 
 ## search_domains
 
