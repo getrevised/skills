@@ -1,0 +1,36 @@
+{
+  "files": [
+    {
+      "path": "SKILL.md",
+      "sha256": "7330ab414dad5810c22977a3ef4e288177ae31f22043daccebcab5e3bad326a4",
+      "size": 24398
+    },
+    {
+      "path": "references/mcp-and-api.md",
+      "sha256": "15624db8f512dd65f14e2c24ad6872fa0553bb9c620c3d3c7c3c1a4934497d55",
+      "size": 31039
+    },
+    {
+      "path": "references/policy.md",
+      "sha256": "f5cb87ae677a4e53fc1593132eacff912cc9ad9aa71e5849655a4a9036f374e8",
+      "size": 4390
+    },
+    {
+      "path": "references/redirects.md",
+      "sha256": "2ecdb6a4f8fe7fa7c88d44982cf3ba21e0f8e0c6a4d8588579cc9a3eb239dd12",
+      "size": 6533
+    },
+    {
+      "path": "references/registration.md",
+      "sha256": "130061aba071ac8efecfd9aa7cc31cc3f470150ace9ffb4a99b090130b2a07d5",
+      "size": 9075
+    },
+    {
+      "path": "references/vetting.md",
+      "sha256": "0f90a59b00c121df79e7aa71fb88fcc08e0838cf0967334c7fb17c1ae7a09ed9",
+      "size": 7289
+    }
+  ],
+  "name": "revised",
+  "version": "2.1"
+}
