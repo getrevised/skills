@@ -66,7 +66,6 @@ Look in the archive across all years, not just the last snapshot.
 
 - Read `availability_checked_at`. If it is more than about 48 hours old, say the name may have been registered since, and plan a registrar check (see `registration.md`).
 - `lookup_domain`'s `registration` section is a live registry and DNS check, a good second look before the registrar's own check.
-- On an open listing, a first `reveal_domain` re-checks availability for you.
 
 ## 7. Value (when price matters)
 
