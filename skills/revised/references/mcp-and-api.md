@@ -24,6 +24,9 @@ Use MCP for a handful of names or a shortlist. Use REST for a pass over the whol
 | `check_availability` | `POST /availability`, `GET /availability?name=` | all | **spends credits automatically**, per answered name; `unknown`, `rejected` and a 24 h repeat are free |
 | `send_feedback` | `POST /feedback` | all | free |
 | `search_pool` | `GET /pool` | Starter, Business | free |
+| `search_auctions` | `GET /auctions` | all; row caps per plan | free (0 credits) |
+| `get_auction` | `GET /auctions/{id}` | all; counts as one row | free (0 credits) |
+| none (REST only) | `GET /auctions/export` | Business | credits, priced per rows |
 | `list_categories` | none | all | free |
 | `search_domains` | `GET /domains` | all | free |
 | `get_domain` | `GET /domains/{id}` | all | free |
@@ -127,6 +130,17 @@ Starter and Business; Free gets `POOL_REQUIRES_PAID` (REST: 402 `upgrade_require
 - Errors: `POOL_STALE` (the pool has not been rebuilt for over a day; retry later), `TOO_BROAD` (timed out; add a `tld` or a tighter floor), `RATE_LIMITED`.
 
 A name in the pool is not thereby a directory listing.
+
+## search_auctions and get_auction
+
+Live and recently ended domain auctions on GoDaddy Auctions and drop.com.au. Revised does not sell these names: every row carries `url`, the source auction page (`url_kind` is `listing` for the exact page, `search` for the marketplace's search page for the name), and the user bids there. Present only while the deploy has auctions switched on (REST: 404 otherwise).
+
+- Cost: 0 credits to search, filter, sort or read one. Caps are anti-scrape limits per UTC day, not charges: Free reads the first 25 results of a search, no paging, 100 rows a day; Starter pages, 2,000 rows a day; Business pages, 20,000 rows a day. `get_auction` counts as one row.
+- Price: `price_usd` with `price_basis` `last_seen_bid` (GoDaddy) or `listed_price`: never a final price. Final price only on ended rows where the source publishes it: `final_price_native` in `currency`, with a USD equivalent `final_price_usd` (`fx_rate` on `fx_date`). Quote native first.
+- Signals per row: bids, `ends_at`, `listed_at`, web-crawl linking domains (`cc_linking_domains`, previous year, strong linkers, first linked release), `crux_bucket`, archive `wayback_*` dates and years, `category`, `spam_flag`, `citability_score`, `value_low_usd`/`value_high_usd`. Null means we hold nothing, never zero. `get_auction` adds `cc_top_linkers`.
+- `search_auctions` filters: `source`, `state` (`live` default, `ended` needs a `source`), `tld`, `category`, `min_price`, `max_price`, `min_bids`, `max_bids`, `min_cc_linking_domains`, `min_cc_strong_linkers`, `max_crux_bucket`, `min_citability`, `min_value`, `exclude_spam`, `listed_since`, `ends_after`, `ends_before`. `sort`: `newest` (default), `ending_soon`, `bids`, `price`, `links`, `strong_linkers`, `value`. MCP `limit` is 1 to 50. Pages: pass `next_cursor` back as `cursor` (not on Free).
+- Errors: `UPGRADE_REQUIRED` (the plan cannot page), `DAILY_CAP` (rows for the day used; `retry_after_seconds`, `upgrade_url`), `TOO_BROAD` (add a `source`, `tld` or a floor), `INVALID_ARGUMENT`, `NOT_FOUND`, `AUCTIONS_UNAVAILABLE` (counter down, retry). REST: `upgrade_required`, `rate_limited`, `invalid_request`, `not_found`, 503 `service_unavailable`.
+- Bulk export (`GET /api/v1/auctions/export`, JSON or CSV) is Business only and spends credits per rows; default 10,000 rows, and an `Idempotency-Key` header makes a retry free of a second charge. It is not an MCP tool.
 
 ## list_categories
 
@@ -255,7 +269,10 @@ A tool that ran and refused answers with `isError` and an upper-case `code`. RES
 | `RATE_LIMITED` | (`check_availability` too.) This account's per-minute (or Free daily lookup) budget for the tool is spent, or a My domains add would pass the cap. | Wait `retry_after_seconds`. |
 | `POOL_REQUIRES_PAID` | Free plan on `search_pool`. | Say a paid plan is needed; `lookup_domain` still works. |
 | `POOL_STALE` | Pool not rebuilt for over a day. | Retry later. |
-| `TOO_BROAD` | Pool search timed out. | Add a `tld` or a tighter floor. |
+| `TOO_BROAD` | Pool or auction search timed out. | Add a `tld` (auctions: or a `source`) or a tighter floor. |
+| `UPGRADE_REQUIRED` | `search_auctions` on a plan that cannot page. | Say so and give `upgrade_url`. |
+| `AUCTIONS_UNAVAILABLE` | The auction daily row counter is down. Nothing read or charged. | Retry shortly. |
+| `DAILY_CAP` | The plan's auction rows for the UTC day are used. Carries `retry_after_seconds`, `upgrade_url`. | Wait for the UTC day or upgrade; do not loop. |
 | `VALUATION_UNAVAILABLE` | The valuation model did not answer. | Retry once, later. |
 | `HISTORY_BUSY` | History service at capacity or budget spent. | Wait `retry_after_seconds`. |
 | `HISTORY_UNAVAILABLE` | The history check failed or did not finish; `reason` says why. | Retry once, later. |
