@@ -2,7 +2,7 @@
 name: revised
 metadata:
   author: revised
-  version: "2.2"
+  version: "2.2.1"
 description: Look up, find, vet, monitor, register and redirect domain names with Revised (https://getrevised.com), through its MCP server (https://getrevised.com/api/mcp) or REST API. Use when a user wants what is known about a domain (backlinks, linking sites, traffic rank, Agent Citability, registration and expiry, archive and spam history, an estimated value), wants an expired or dropped domain with real link history that fits their own site, wants to watch their own domains for changes, needs help registering a name (Cloudflare, Vercel or Porkbun, which agents can drive), or wants a 301/410 redirect map from an old domain's linked URLs. Covers connecting the MCP server, choosing between lookup, pool search and directory search, vetting, hold rules per plan, paid checks, registration only after the user confirms, and expired-domain-abuse policy limits.
 ---
 
@@ -206,6 +206,7 @@ Show the user the full map and get approval before they deploy it.
 `search_auctions` and `get_auction` read live and recently ended domain auctions on other marketplaces (GoDaddy Auctions, drop.com.au), joined to what Revised knows about each name. They are free on every plan: searching, filtering and sorting cost 0 credits. Revised sells nothing here. Each row's `url` is the source auction page, and the user bids there. Rules:
 
 - `price_usd` is the last seen bid (or the listed price), never a final price, and can be hours old. Say "last seen bid". A final price exists only on ended rows where the source publishes a result: `final_price_native` in `currency` (AUD on drop.com.au), plus a USD equivalent `final_price_usd` converted at `fx_rate` on `fx_date`. Quote the native amount and currency, and the USD as an equivalent; never treat `price_usd` as the final price.
+- Default is live auctions only. History is opt-in: pass `state: "ended"` (last 365 days, most recently ended first, needs a `source` today). Ended rows carry the final price fields above plus `outcome` (`sold`, `renewed`, `dropped`, `unknown`, or null before checked) and `outcome_at`; the outcome is an inference from registry data, not a sale record. History costs 0 credits and uses the same daily row cap as live. `get_auction` takes no `state`: an id returns its row either way.
 - A null is absent data, never zero. A sort or a minimum filter drops rows without that column.
 - Plans cap what an account reads, as anti-scrape limits and not charges: Free the first page of a search (25 rows, no paging) and 100 rows a day, Starter paging and 2,000 rows a day, Business paging and 20,000 rows a day (UTC). On `UPGRADE_REQUIRED` or `DAILY_CAP` give the person the `upgrade_url`; do not retry in a loop.
 - Row actions keep their own prices: `lookup_domain`, `estimate_value` and `check_spam_history` on a row are separate calls, so say the price first as usual. Bulk export is Business only and is REST, not an MCP tool.
