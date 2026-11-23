@@ -2,7 +2,7 @@
 name: revised
 metadata:
   author: revised
-  version: "2.2.2"
+  version: "2.2.3"
 description: Look up, find, vet, monitor, register and redirect domain names with Revised (https://getrevised.com), through its MCP server (https://getrevised.com/api/mcp) or REST API. Use when a user wants what is known about a domain (backlinks, linking sites, traffic rank, Agent Citability, registration and expiry, archive and spam history, an estimated value), wants an expired or dropped domain with real link history that fits their own site, wants to watch their own domains for changes, needs help registering a name (Cloudflare, Vercel or Porkbun, which agents can drive), or wants a 301/410 redirect map from an old domain's linked URLs. Covers connecting the MCP server, choosing between lookup, pool search and directory search, vetting, hold rules per plan, paid checks, registration only after the user confirms, and expired-domain-abuse policy limits.
 ---
 
