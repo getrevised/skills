@@ -22,6 +22,7 @@ Use MCP for a handful of names or a shortlist. Use REST for a pass over the whol
 | `whoami` | `GET /me` | all | free |
 | `lookup_domain` | `GET /lookup?domain=` (`&live=1`, `&poll=<handle>`) | all; Free has a daily cap | **spends credits automatically**, once per name per 24 hours; `live` fills only with `confirm: true` |
 | `check_availability` | `POST /availability`, `GET /availability?name=` | all | **spends credits automatically**, per answered name; `unknown`, `rejected` and a 24 h repeat are free |
+| `check_email_reputation` | `GET /domains/{name}/email-reputation` | all | **spends credits automatically**, only for a complete report, once per name per 24 hours; a `partial` report and a failed check are free |
 | `send_feedback` | `POST /feedback` | all | free |
 | `search_pool` | `GET /pool` | Starter, Business | free |
 | `search_auctions` | `GET /auctions` | all; row caps per plan | free (0 credits) |
@@ -94,6 +95,14 @@ Up to 50 names per call, on every plan. Asks the registry whether each is regist
 REST: `POST /api/v1/availability` with `{"names": ["example.com"]}` (1 to 50 names), or `GET /api/v1/availability?name=example.com` for one. Same answers, charges and refusals as the MCP tool (a refusal carries the same fields in the error body); `RATE_LIMITED` is HTTP 429 with `Retry-After`. The names are not stored.
 
 It costs credits, charged automatically with no confirm step, per name that gets an answer. `unknown` and `rejected` names are free, and so is a name this account checked in the last 24 hours. Tell the person it costs credits before the first call; read the price from `whoami`. The result carries `credits_spent` and `balance`. With too few credits it answers `INSUFFICIENT_CREDITS` (`required`, `balance`, `action`, `action_url`, `topup_url`, `upgrade_url`; `topup_url` is null on Free) and spends nothing; a reply that leaves the balance low carries `low_balance: true` and `action_url`. It has its own per-minute limit: `RATE_LIMITED` carries `retry_after_seconds`.
+
+## check_email_reputation
+
+One domain, on every plan. Checks which spam blocklists the domain, and the mail servers it sends from, appear on, and reads its email records (MX, SPF, DMARC, DKIM at common selectors, MTA-STS, BIMI). The answer is under `report`: `status` (`ok` or `partial`), `lists_checked` (always read it: a result speaks only for those lists), `results` (per list, `state` `listed`, `clean` or `error`, with `reasons` for a listing), `errored_lists` and `unavailable_lists` (lists that could NOT be checked; never present these as clean), `health` (findings with `check`, `status`, `code`, `detail`) and `checked_at`.
+
+REST: `GET /api/v1/domains/{name}/email-reputation`. Same answers, charges and refusals as the MCP tool; `RATE_LIMITED` is HTTP 429 with `Retry-After`, a check that could not run is 503 `service_unavailable` and costs nothing. The name is not stored.
+
+It costs credits, charged automatically with no confirm step, only for a COMPLETE report: every list answered and email health done. A `partial` report (say which list could not be checked and offer to retry) and a failed check are free, and so is a repeat of the same name inside 24 hours. Tell the person it costs credits before the first call; read the price from `whoami`. The result carries `credits_spent`, `charged` and `balance`. With too few credits it answers `INSUFFICIENT_CREDITS` (`required`, `balance`, `action`, `action_url`, `topup_url`, `upgrade_url`) and spends nothing. It has its own per-minute limit.
 
 ## lookup_domain
 

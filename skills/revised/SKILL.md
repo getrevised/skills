@@ -2,7 +2,7 @@
 name: revised
 metadata:
   author: revised
-  version: "2.2.3"
+  version: "2.3.0"
 description: Look up, find, vet, monitor, register and redirect domain names with Revised (https://getrevised.com), through its MCP server (https://getrevised.com/api/mcp) or REST API. Use when a user wants what is known about a domain (backlinks, linking sites, traffic rank, Agent Citability, registration and expiry, archive and spam history, an estimated value), wants an expired or dropped domain with real link history that fits their own site, wants to watch their own domains for changes, needs help registering a name (Cloudflare, Vercel or Porkbun, which agents can drive), or wants a 301/410 redirect map from an old domain's linked URLs. Covers connecting the MCP server, choosing between lookup, pool search and directory search, vetting, hold rules per plan, paid checks, registration only after the user confirms, and expired-domain-abuse policy limits.
 ---
 
@@ -32,6 +32,7 @@ Credits are separate from the plan. Some tools spend them; everything else is fr
 |---|---|
 | `lookup_domain` | **Automatically**, with no confirm step, once per name per 24 hours (a repeat, a retry or a poll of the same name inside that window is free). It costs less when we only hold registration data for the name; the reply's `credits_spent` says which applied. Tell the person it costs credits before the first lookup. |
 | `check_availability` | **Automatically**, with no confirm step, per name that gets an answer (`available` or `registered`). A name that comes back `unknown` or `rejected` is free, and so is a repeat of the same name inside 24 hours. Tell the person it costs credits before the first call. |
+| `check_email_reputation` | **Automatically**, with no confirm step, only for a COMPLETE report (every list we check answered, plus email health), once per domain per 24 hours. A `partial` report (a list could not be checked) and a failed check are free. Tell the person it costs credits before the first call. |
 | `lookup_domain` with `live: true` | Only with `confirm: true`. Call without `confirm` first for the estimate. |
 | `send_feedback` | Never: it is free. Offer it, and send only after the person agrees to the text. |
 | `estimate_value` | Only with `confirm: true`. |
@@ -65,6 +66,7 @@ Details and the Google link: `references/policy.md`. Read it before step 5 and a
 | To keep a directory listing away from other accounts while deciding | `hold_domain`, `extend_hold`, `release_hold`, `list_holds` |
 | To watch their own domains for changes | `add_my_domains`, `list_my_domains`, `list_my_domain_changes` and the related my-domains tools |
 | To know right now whether a name is registered | `check_availability` (spends credits automatically per answered name; tell the person first) |
+| Whether a domain or its mail servers are on spam blocklists, and whether SPF, DMARC and DKIM are set up | `check_email_reputation` (spends credits automatically for a complete report; tell the person first) |
 | To tell the Revised team something is wrong or missing | `send_feedback` (free; offer it and ask before sending) |
 | A deeper link report on one name | `run_deep_check` (price first, spends only on `confirm: true`), then `get_deep_check` |
 
